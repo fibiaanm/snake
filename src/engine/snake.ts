@@ -1,11 +1,11 @@
 import { Vector, position } from "@/types/translation";
-import { app } from "./context";
+import { Application, app } from "./context";
 import { Log } from "@/facade/Logger";
 
 export class Snake {
     // x,y
     private _direction: Vector = [0, 1]
-    private _position: position = { x: 90, y: 90, z: 0 }
+    private _position: position = { x: 0, y: 0, z: 0 }
     private _length: number = 3
     private _path: position[] = []
     private _justBonus: boolean = false
@@ -39,8 +39,6 @@ export class Snake {
 
     public nextStep() {
         const bounds = app().container
-        this.eatCollition()
-        
 
         const x = this._direction[0]
         const y = this._direction[1]
@@ -66,6 +64,9 @@ export class Snake {
             this._position.y = bounds.height -app().square
         }
         this.buildPath()
+
+
+        this.eatCollition()
     }
 
     private eatCollition(){
@@ -107,5 +108,8 @@ export class Snake {
     }
     get bonus(){
         return this._justBonus
+    }
+    get path(){
+        return this._path
     }
 }

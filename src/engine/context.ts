@@ -5,26 +5,27 @@ import { Snake } from "./snake";
 import moment from "moment";
 import { Coin } from "./coin";
 import { Log } from "@/facade/Logger";
+import { reactive } from "vue";
+import { score } from "./score";
 
 interface creationalApplication{
     aux: HTMLCanvasElement,
     main: HTMLCanvasElement
 }
 
-class Application extends Painter{
+export class Application extends Painter{
     private static app: Application|undefined;
 
     public _lastRefresh: number = 0;
     private readonly speedRatio = 200;
     
     private _status: ApplicationMode;
-    private _snake: Snake = new Snake();
-    private _coin: Coin = new Coin();
-    private _speed: number = 1.5;
-    private _square: number = 15;
+    private _snake: Snake;
+    private _coin: Coin;
+    private _square: number = 30;
     private _container: size = {
-        width: 300,
-        height: 300
+        width: 360,
+        height: 360
     }
 
     private _gameIsRunning: boolean = false
@@ -32,6 +33,8 @@ class Application extends Painter{
     constructor(){
         super()
         this._status = ApplicationMode.dev
+        this._coin = new Coin(this.container, this.square);
+        this._snake = new Snake()
     }
 
     public static getInstance(){
@@ -43,7 +46,12 @@ class Application extends Painter{
 
     public restart(){
         this.drawInitial()
+        this._snake = new Snake()
+        this._coin = new Coin(this.container, this.square)
         this.isRuning = true
+        application.end = false
+        score().restore()
+        requestAnimationFrame(app().refresh)
     }
 
     public refresh(){
@@ -53,24 +61,40 @@ class Application extends Painter{
             requestAnimationFrame(ctx.refresh)
             return
         }
-        if(app().snake.validateCollition() && !app().snake.bonus){
-            Log.info('Self Collition')
-            console.log(app().snake.collides)
-            return
-        }
+
         app().snake.bonus = false
         ctx.clearCanvas()
         ctx.drawSnake()
         ctx.drawCoin()
 
+        if(app().snake.validateCollition() && !app().snake.bonus){
+            Log.info('Self Collition')
+            application.end = true
+            application.paused = false
+            console.log(app().snake.collides)
+
+            return
+        }
+
         ctx._lastRefresh = current
-        if(app().isRuning)
+        if(app().isRuning && !application.paused)
             requestAnimationFrame(ctx.refresh)
     }
 
     public registerCoinCollition(){
         const ctx = app()
         ctx.coin.createNew()
+        score().addPoint()
+    }
+    
+    public pause(){
+        if(application.end) return
+        if(app().paused){
+            application.paused = false
+            app().refresh()
+        }else{
+            application.paused = true
+        }
     }
 
     get mode(): ApplicationMode{
@@ -119,9 +143,20 @@ class Application extends Painter{
     }
 
     get speed(){
-        return this.speedRatio / this._speed
+        return this.speedRatio / application.speed
+    }
+
+    get paused(){
+        return application.paused
     }
 }
+
+export let application = reactive({
+    points: 0,
+    paused: true,
+    end: true,
+    speed: 1.5
+})
 
 export const app = (wrappers?: creationalApplication) => {
     const application = Application.getInstance();

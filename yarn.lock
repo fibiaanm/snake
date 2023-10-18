@@ -697,6 +697,11 @@ magic-string@^0.30.0:
   dependencies:
     "@jridgewell/sourcemap-codec" "^1.4.15"
 
+material-icons@^1.13.12:
+  version "1.13.12"
+  resolved "https://registry.yarnpkg.com/material-icons/-/material-icons-1.13.12.tgz#eed4082bf0426642edeb027e75397e3064adc536"
+  integrity sha512-/2YoaB79IjUK2B2JB+vIXXYGtBfHb/XG66LvoKVM5ykHW7yfrV5SP6d7KLX6iijY6/G9GqwgtPQ/sbhFnOURVA==
+
 merge2@^1.3.0:
   version "1.4.1"
   resolved "https://registry.npmjs.org/merge2/-/merge2-1.4.1.tgz"

@@ -35,6 +35,7 @@ export class Painter {
         
         const ctx = app()
         const snake = ctx.snake
+        snake.nextStep()
         const square = ctx.square
         for(const point of snake.howToDraw){
             this._ctx.fillStyle = "blue";
@@ -45,7 +46,7 @@ export class Painter {
             this._ctx.strokeRect(point.x, point.y, square, square);
         }
 
-        snake.nextStep()
+        
         
     }
 

@@ -11,3 +11,7 @@ The application instance has been done using the singleton design patter and a f
 
 #### Logs
 The logs system is built using a class full of static methods. There are some `debug` options to only print messages when the application is on local environment. This also allows to handle errors and send feedback to product.
+
+
+### Preview
+![Preview](image.png)
