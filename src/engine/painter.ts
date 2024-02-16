@@ -33,6 +33,7 @@ export class Painter {
 
     protected drawSnake() {
         
+        
         const ctx = app()
         const snake = ctx.snake
         snake.nextStep()
@@ -40,7 +41,7 @@ export class Painter {
         for(const point of snake.howToDraw){
             this._ctx.fillStyle = "blue";
             this._ctx.fillRect(point.x, point.y, square, square);
-            
+
     
             this._ctx.strokeStyle = "white";
             this._ctx.lineWidth = 2
