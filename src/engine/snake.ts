@@ -1,5 +1,5 @@
 import { Vector, position } from "@/types/translation";
-import { Application, app } from "./context";
+import { app } from "./context";
 import { Log } from "@/facade/Logger";
 
 export class Snake {

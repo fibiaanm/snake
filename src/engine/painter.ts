@@ -5,7 +5,7 @@ export class Painter {
     protected _wrapper: HTMLCanvasElement = document.createElement('canvas');
 
     private _ctx: CanvasRenderingContext2D;
-    private _ctxAux: CanvasRenderingContext2D;
+    protected _ctxAux: CanvasRenderingContext2D;
 
     constructor() {
         this._ctx = this._wrapper.getContext('2d')!
