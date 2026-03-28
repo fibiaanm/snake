@@ -12,10 +12,12 @@
     "@vueuse/core": "^10.5.0",
     "material-icons": "^1.13.12",
     "moment": "^2.29.4",
+    "three": "^0.183.2",
     "url": "^0.11.3",
     "vue": "^3.3.4"
   },
   "devDependencies": {
+    "@types/three": "^0.183.1",
     "@vitejs/plugin-vue": "^4.2.3",
     "autoprefixer": "^10.4.16",
     "postcss": "^8.4.31",
