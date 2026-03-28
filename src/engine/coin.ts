@@ -22,13 +22,18 @@ export class Coin{
         let y = app().container.height / app().square
         this._position.x = Math.floor(Math.random() * x) * app().square
         this._position.y = Math.floor(Math.random() * y) * app().square
-        const collide = app().snake.path.filter((step) => step.x == this._position.x && step.y == this._position.y)
 
-        if(collide.length == 0) return
+        const onSnake = app().snake.path.some(
+            s => s.x === this._position.x && s.y === this._position.y
+        )
+        const onWall = app().wallPixelPositions.some(
+            w => w.x === this._position.x && w.y === this._position.y
+        )
+
+        if (!onSnake && !onWall) return
         Log.info('Re-draw coin')
         this.createNew()
     }
-
 
     get position(){
         return this._position

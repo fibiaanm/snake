@@ -1,29 +1,32 @@
 import * as THREE from 'three'
 
 export class BoardMesh {
-  constructor(scene: THREE.Scene, gridSize: number) {
-    const center = gridSize / 2 - 0.5
+  private readonly _objects: THREE.Object3D[] = []
+
+  constructor(scene: THREE.Scene, cols: number, rows: number) {
+    const cx = cols / 2 - 0.5
+    const cz = rows / 2 - 0.5
 
     // Floor
     const floor = new THREE.Mesh(
-      new THREE.PlaneGeometry(gridSize, gridSize),
+      new THREE.PlaneGeometry(cols, rows),
       new THREE.MeshStandardMaterial({ color: 0x16213e, roughness: 0.9, metalness: 0.0 })
     )
     floor.rotation.x = -Math.PI / 2
-    floor.position.set(center, -0.01, center)
+    floor.position.set(cx, -0.01, cz)
     floor.receiveShadow = true
-    scene.add(floor)
+    this._add(scene, floor)
 
-    // Grid lines
-    const grid = new THREE.GridHelper(gridSize, gridSize, 0x0f3460, 0x0f3460)
-    grid.position.set(center, 0, center)
-    scene.add(grid)
+    // Grid
+    const grid = new THREE.GridHelper(Math.max(cols, rows), Math.max(cols, rows), 0x0f3460, 0x0f3460)
+    grid.position.set(cx, 0, cz)
+    this._add(scene, grid)
 
-    // Border glow lines
-    this._buildBorders(scene, gridSize)
+    // Border glow
+    this._buildBorders(scene, cols, rows)
   }
 
-  private _buildBorders(scene: THREE.Scene, g: number) {
+  private _buildBorders(scene: THREE.Scene, cols: number, rows: number) {
     const mat = new THREE.MeshStandardMaterial({
       color: 0xe53935,
       emissive: 0xe53935,
@@ -31,18 +34,29 @@ export class BoardMesh {
       transparent: true,
       opacity: 0.7
     })
+    const cx = cols / 2 - 0.5
+    const cz = rows / 2 - 0.5
 
-    const segments: { geo: THREE.BufferGeometry; x: number; z: number }[] = [
-      { geo: new THREE.BoxGeometry(g, 0.08, 0.08), x: g / 2 - 0.5, z: -0.5 },
-      { geo: new THREE.BoxGeometry(g, 0.08, 0.08), x: g / 2 - 0.5, z: g - 0.5 },
-      { geo: new THREE.BoxGeometry(0.08, 0.08, g), x: -0.5,       z: g / 2 - 0.5 },
-      { geo: new THREE.BoxGeometry(0.08, 0.08, g), x: g - 0.5,    z: g / 2 - 0.5 },
+    const defs = [
+      { g: new THREE.BoxGeometry(cols, 0.08, 0.08), x: cx, z: -0.5 },
+      { g: new THREE.BoxGeometry(cols, 0.08, 0.08), x: cx, z: rows - 0.5 },
+      { g: new THREE.BoxGeometry(0.08, 0.08, rows), x: -0.5,      z: cz },
+      { g: new THREE.BoxGeometry(0.08, 0.08, rows), x: cols - 0.5, z: cz },
     ]
-
-    segments.forEach(({ geo, x, z }) => {
-      const mesh = new THREE.Mesh(geo, mat)
-      mesh.position.set(x, 0, z)
-      scene.add(mesh)
+    defs.forEach(({ g, x, z }) => {
+      const m = new THREE.Mesh(g, mat)
+      m.position.set(x, 0, z)
+      this._add(scene, m)
     })
+  }
+
+  private _add(scene: THREE.Scene, obj: THREE.Object3D) {
+    scene.add(obj)
+    this._objects.push(obj)
+  }
+
+  public dispose(scene: THREE.Scene) {
+    this._objects.forEach(o => scene.remove(o))
+    this._objects.length = 0
   }
 }

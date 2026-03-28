@@ -1,0 +1,77 @@
+{
+  "levels": [
+    {
+      "id": 1,
+      "pointsToAdvance": 20,
+      "arena": { "cols": 12, "rows": 12 },
+      "obstacles": { "mode": "fixed", "walls": [] }
+    },
+    {
+      "id": 2,
+      "pointsToAdvance": 20,
+      "arena": { "cols": 13, "rows": 13 },
+      "obstacles": {
+        "mode": "fixed",
+        "walls": [
+          { "x": 4, "y": 6, "length": 4, "axis": "x" }
+        ]
+      }
+    },
+    {
+      "id": 3,
+      "pointsToAdvance": 20,
+      "arena": { "cols": 13, "rows": 13 },
+      "obstacles": {
+        "mode": "fixed",
+        "walls": [
+          { "x": 3, "y": 4, "length": 3, "axis": "x" },
+          { "x": 9, "y": 7, "length": 3, "axis": "y" }
+        ]
+      }
+    },
+    {
+      "id": 4,
+      "pointsToAdvance": 20,
+      "arena": { "cols": 14, "rows": 14 },
+      "obstacles": {
+        "mode": "random",
+        "count": 2,
+        "minLength": 2,
+        "maxLength": 3
+      }
+    },
+    {
+      "id": 5,
+      "pointsToAdvance": 25,
+      "arena": { "cols": 14, "rows": 14 },
+      "obstacles": {
+        "mode": "random",
+        "count": 3,
+        "minLength": 2,
+        "maxLength": 4
+      }
+    },
+    {
+      "id": 6,
+      "pointsToAdvance": 25,
+      "arena": { "cols": 15, "rows": 15 },
+      "obstacles": {
+        "mode": "random",
+        "count": 4,
+        "minLength": 2,
+        "maxLength": 4
+      }
+    },
+    {
+      "id": 7,
+      "pointsToAdvance": 30,
+      "arena": { "cols": 15, "rows": 15 },
+      "obstacles": {
+        "mode": "random",
+        "count": 5,
+        "minLength": 3,
+        "maxLength": 4
+      }
+    }
+  ]
+}
